@@ -14,11 +14,15 @@ const { NotImplementedError } = require('../extensions/index.js');
 function getSeason(date) {
 	console.log("date is" + date);
 	if (!date) return "Unable to determine the time of year!";
-	if (!(date instanceof Date) || Object.prototype.toString.call(date) !== "[object Date]" || isNaN(date.getTime())) {
-		throw new Error("Invalid date!");
+	try {
+		if (!(date instanceof Date) || Object.prototype.toString.call(date) !== "[object Date]" 
+		  || isNaN(date.getTime()) || date.hasOwnProperty("toString") || date.hasOwnProperty("getMonth")
+		) {
+		  throw new Error("Invalid date!");
+		}
+	  } catch (e) {
+		throw new Error("Invalid date!"); 
 	  }
-	  //console.log(date);
-
 	const month = date.getMonth();
 	if (month === 11 || month <= 1) return "winter";
   if (month >= 2 && month <= 4) return "spring";
